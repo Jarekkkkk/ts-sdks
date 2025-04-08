@@ -1,5 +1,19 @@
 # @mysten/walrus
 
+## 0.0.13
+
+### Patch Changes
+
+- 4389b36: Add support for customizing wasm url
+- Updated dependencies [4389b36]
+  - @mysten/walrus-wasm@0.0.5
+
+## 0.0.12
+
+### Patch Changes
+
+- 3be4016: fix packageId in deleteBlob move call
+
 ## 0.0.11
 
 ### Patch Changes

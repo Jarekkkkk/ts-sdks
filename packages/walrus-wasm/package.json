@@ -3,7 +3,7 @@
   "collaborators": [
     "jonaslindstrom"
   ],
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": false,
   "main": "index.js",
   "types": "./web/walrus_wasm.d.ts",
@@ -12,6 +12,11 @@
       "browser": "./web/walrus_wasm.js",
       "import": "./index.js",
       "require": "./index.js"
+    },
+    "./web/walrus_wasm_bg.wasm": {
+      "browser": "./web/walrus_wasm_bg.wasm",
+      "import": "./web/walrus_wasm_bg.wasm",
+      "require": "./web/walrus_wasm_bg.wasm"
     }
   }
 }
