@@ -61,7 +61,7 @@ export type StashedResponsePayload = InferOutput<typeof StashedResponsePayload>;
 
 export const StashedResponse = object({
 	id: pipe(string(), uuid()),
-	source: literal('stashed-channel'),
+	source: literal('zksend-channel'),
 	payload: StashedResponsePayload,
 });
 export type StashedResponse = InferOutput<typeof StashedResponse>;

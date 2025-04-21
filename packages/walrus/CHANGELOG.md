@@ -1,5 +1,28 @@
 # @mysten/walrus
 
+## 0.0.17
+
+### Patch Changes
+
+- Updated dependencies [2705dc8]
+  - @mysten/sui@1.28.0
+
+## 0.0.16
+
+### Patch Changes
+
+- 981a39d: Add separate esm entrypoint
+- Updated dependencies [981a39d]
+  - @mysten/walrus-wasm@0.0.6
+
+## 0.0.15
+
+### Patch Changes
+
+- 986c4e3: Add onError to storageNodeClientOptions
+- Updated dependencies [5cea435]
+  - @mysten/sui@1.27.1
+
 ## 0.0.14
 
 ### Patch Changes

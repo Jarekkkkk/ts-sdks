@@ -8,15 +8,7 @@ import { useConnectWallet, useCurrentWallet } from '../../src/index.js';
 import { createMockAccount } from '../mocks/mockAccount.js';
 import { suiFeatures } from '../mocks/mockFeatures.js';
 import { createWalletProviderContextWrapper, registerMockWallet } from '../test-utils.js';
-
-function withResolvers<T = any>() {
-	let resolve, reject;
-	const promise = new Promise<T>((res, rej) => {
-		resolve = res;
-		reject = rej;
-	});
-	return { promise, reject: reject!, resolve: resolve! };
-}
+import { promiseWithResolvers } from '@mysten/utils';
 
 describe('useAutoConnectWallet', () => {
 	test('returns "disabled" when the auto-connect functionality is disabled', async () => {
@@ -54,7 +46,7 @@ describe('useAutoConnectWallet', () => {
 		// Now unmount our component tree to simulate someone leaving the page.
 		unmount();
 
-		const { promise, resolve } = withResolvers();
+		const { promise, resolve } = promiseWithResolvers();
 		mockWallet.mocks.connect.mockImplementation(async () => {
 			return promise;
 		});

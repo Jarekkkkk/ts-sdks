@@ -3,7 +3,7 @@
 	"author": "Mysten Labs <build@mystenlabs.com>",
 	"description": "Sui TypeScript API(Work in Progress)",
 	"homepage": "https://sdk.mystenlabs.com",
-	"version": "1.27.0",
+	"version": "1.28.0",
 	"license": "Apache-2.0",
 	"sideEffects": false,
 	"files": [
@@ -159,6 +159,7 @@
 	"dependencies": {
 		"@graphql-typed-document-node/core": "^3.2.0",
 		"@mysten/bcs": "workspace:*",
+		"@mysten/utils": "workspace:*",
 		"@noble/curves": "^1.8.1",
 		"@noble/hashes": "^1.7.1",
 		"@scure/base": "^1.2.4",

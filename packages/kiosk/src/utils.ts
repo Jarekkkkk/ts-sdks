@@ -20,6 +20,7 @@ import {
 import { KioskType } from './bcs.js';
 import type { Kiosk, KioskData, KioskListing, TransferPolicyCap } from './types/index.js';
 import { TRANSFER_POLICY_CAP_TYPE } from './types/index.js';
+import { chunk } from '@mysten/utils';
 
 const DEFAULT_QUERY_LIMIT = 50;
 
@@ -191,9 +192,7 @@ export async function getAllObjects(
 	options: SuiObjectDataOptions,
 	limit: number = DEFAULT_QUERY_LIMIT,
 ) {
-	const chunks = Array.from({ length: Math.ceil(ids.length / limit) }, (_, index) =>
-		ids.slice(index * limit, index * limit + limit),
-	);
+	const chunks = chunk(ids, limit);
 
 	const results = await Promise.all(
 		chunks.map((chunk) => {

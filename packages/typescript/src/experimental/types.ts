@@ -26,17 +26,10 @@ export interface SelfRegisteringClientExtension<
 	};
 }
 
-export type Simplify<T> = {
-	[K in keyof T]: T[K];
-} & {};
-
-export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
-	k: infer I,
-) => void
-	? I
-	: never;
-
-export type ClientWithExtensions<T> = Experimental_BaseClient & T;
+export type ClientWithExtensions<
+	T,
+	Base extends Experimental_BaseClient = Experimental_BaseClient,
+> = Base & T;
 
 export namespace Experimental_SuiClientTypes {
 	export type Network = 'mainnet' | 'testnet' | 'devnet' | 'localnet' | (string & {});

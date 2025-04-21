@@ -1,5 +1,31 @@
 # @mysten/zksend
 
+## 0.12.26
+
+### Patch Changes
+
+- 3eb8990: use window-wallet-core for experimental unified-adapter
+- Updated dependencies [2705dc8]
+- Updated dependencies [3eb8990]
+  - @mysten/sui@1.28.0
+  - @mysten/window-wallet-core@0.0.2
+  - @mysten/wallet-standard@0.14.5
+
+## 0.12.25
+
+### Patch Changes
+
+- d914fd3: revert zksend channel name change
+
+## 0.12.24
+
+### Patch Changes
+
+- 9cacba9: Add experimental adapter package
+- Updated dependencies [5cea435]
+  - @mysten/sui@1.27.1
+  - @mysten/wallet-standard@0.14.4
+
 ## 0.12.23
 
 ### Patch Changes

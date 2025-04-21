@@ -4,7 +4,7 @@
 import type { InferOutput } from 'valibot';
 import { parse, safeParse } from 'valibot';
 
-import { withResolvers } from '../../utils/withResolvers.js';
+import { promiseWithResolvers } from '@mysten/utils';
 import type { StashedSupportedNetwork } from '../types.js';
 import type { StashedRequestData, StashedResponsePayload, StashedResponseTypes } from './events.js';
 import { StashedRequest, StashedResponse } from './events.js';
@@ -48,7 +48,7 @@ export class StashedPopup {
 		this.#name = name;
 		this.#network = network;
 
-		const { promise, resolve, reject } = withResolvers();
+		const { promise, resolve, reject } = promiseWithResolvers();
 		this.#promise = promise;
 		this.#resolve = resolve;
 		this.#reject = reject;
@@ -155,7 +155,7 @@ export class StashedHost {
 		window.opener.postMessage(
 			{
 				id: this.#request.id,
-				source: 'stashed-channel',
+				source: 'zksend-channel',
 				payload,
 			} satisfies StashedResponse,
 			this.#request.origin,

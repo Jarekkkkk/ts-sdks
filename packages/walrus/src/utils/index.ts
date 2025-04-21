@@ -124,12 +124,6 @@ export function nodesByShardIndex(committee: InferBcsType<ReturnType<typeof Comm
 	return nodesByShardIndex;
 }
 
-export function chunk<T>(array: T[], size: number) {
-	return Array.from({ length: Math.ceil(array.length / size) }, (_, i) => {
-		return array.slice(i * size, (i + 1) * size);
-	});
-}
-
 export function toTypeString(type: SuiMoveNormalizedType): string {
 	if (typeof type === 'string') {
 		switch (type) {

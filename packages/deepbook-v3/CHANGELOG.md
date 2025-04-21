@@ -1,5 +1,25 @@
 # @mysten/deepbook-v3
 
+## 0.14.1
+
+### Patch Changes
+
+- Updated dependencies [2705dc8]
+  - @mysten/sui@1.28.0
+
+## 0.14.0
+
+### Minor Changes
+
+- 5e7eeb9: Package Upgrade ID
+
+## 0.13.7
+
+### Patch Changes
+
+- Updated dependencies [5cea435]
+  - @mysten/sui@1.27.1
+
 ## 0.13.6
 
 ### Patch Changes

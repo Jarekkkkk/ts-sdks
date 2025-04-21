@@ -11,6 +11,7 @@
 		"../signers",
 		"../suins",
 		"../typescript",
+		"../utils",
 		"../wallet-standard",
 		"../walrus",
 		"../zksend"

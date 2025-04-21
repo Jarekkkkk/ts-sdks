@@ -7,7 +7,6 @@ import { Transaction } from '@mysten/sui/transactions';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { expect, type Mock } from 'vitest';
 
-import { toBase58 } from '../../../bcs/dist/cjs/b58.js';
 import {
 	WalletFeatureNotSupportedError,
 	WalletNotConnectedError,
@@ -15,6 +14,7 @@ import {
 import { useConnectWallet, useSignAndExecuteTransaction } from '../../src/index.js';
 import { suiFeatures } from '../mocks/mockFeatures.js';
 import { createWalletProviderContextWrapper, registerMockWallet } from '../test-utils.js';
+import { toBase58 } from '@mysten/utils';
 
 describe('useSignAndExecuteTransaction', () => {
 	test('throws an error when trying to sign and execute a transaction without a wallet connection', async () => {

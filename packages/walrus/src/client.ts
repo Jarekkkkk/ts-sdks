@@ -69,7 +69,6 @@ import type {
 } from './types.js';
 import { blobIdToInt, IntentType, SliverData, StorageConfirmation } from './utils/bcs.js';
 import {
-	chunk,
 	encodedBlobLength,
 	getShardIndicesByNodeId,
 	getSourceSymbols,
@@ -84,6 +83,7 @@ import {
 import { SuiObjectDataLoader } from './utils/object-loader.js';
 import { shuffle, weightedShuffle } from './utils/randomness.js';
 import { getWasmBindings } from './wasm.js';
+import { chunk } from '@mysten/utils';
 
 export class WalrusClient {
 	#storageNodeClient: StorageNodeClient;

@@ -1,6 +1,6 @@
 {
 	"name": "@mysten/walrus",
-	"version": "0.0.14",
+	"version": "0.0.17",
 	"private": false,
 	"description": "Walrus SDK",
 	"license": "Apache-2.0",
@@ -56,6 +56,7 @@
 	"dependencies": {
 		"@mysten/bcs": "workspace:*",
 		"@mysten/sui": "workspace:*",
+		"@mysten/utils": "workspace:*",
 		"@mysten/walrus-wasm": "workspace:*",
 		"dataloader": "^2.2.3"
 	}

@@ -17,6 +17,7 @@
 	"dependencies": {
 		"@mysten/bcs": "workspace:*",
 		"@mysten/dapp-kit": "workspace:*",
+		"@mysten/dapp-kit-next": "workspace:*",
 		"@mysten/deepbook": "workspace:*",
 		"@mysten/deepbook-v3": "workspace:*",
 		"@mysten/enoki": "workspace:*",
@@ -26,6 +27,7 @@
 		"@mysten/signers": "workspace:*",
 		"@mysten/sui": "workspace:*",
 		"@mysten/suins": "workspace:*",
+		"@mysten/utils": "workspace:*",
 		"@mysten/wallet-standard": "workspace:*",
 		"@mysten/walrus": "workspace:*",
 		"@mysten/zksend": "workspace:*",

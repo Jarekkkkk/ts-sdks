@@ -82,16 +82,7 @@ export class KioskClient {
 	 * @returns
 	 */
 	async getKiosk({ id, options }: { id: string; options?: FetchKioskOptions }): Promise<KioskData> {
-		return (
-			await fetchKiosk(
-				this.client,
-				id,
-				{
-					limit: 1000,
-				},
-				options || {},
-			)
-		).data;
+		return (await fetchKiosk(this.client, id, {}, options || {})).data;
 	}
 
 	/**
