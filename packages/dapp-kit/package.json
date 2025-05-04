@@ -3,7 +3,7 @@
 	"author": "Mysten Labs <build@mystenlabs.com>",
 	"description": "A collection of React hooks and components for interacting with the Sui blockchain and wallets.",
 	"homepage": "https://sdk.mystenlabs.com/typescript",
-	"version": "0.15.6",
+	"version": "0.16.2",
 	"license": "Apache-2.0",
 	"files": [
 		"CHANGELOG.md",
@@ -78,10 +78,10 @@
 		"vitest": "^3.1.1"
 	},
 	"dependencies": {
+		"@mysten/slush-wallet": "workspace:*",
 		"@mysten/sui": "workspace:*",
 		"@mysten/utils": "workspace:*",
 		"@mysten/wallet-standard": "workspace:*",
-		"@mysten/zksend": "workspace:*",
 		"@radix-ui/react-dialog": "^1.1.6",
 		"@radix-ui/react-dropdown-menu": "^2.1.6",
 		"@radix-ui/react-slot": "^1.1.2",

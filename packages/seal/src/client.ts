@@ -1,8 +1,6 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import type { SuiClient } from '@mysten/sui/client';
-
 import { EncryptedObject } from './bcs.js';
 import { G1Element, G2Element } from './bls12381.js';
 import { decrypt } from './decrypt.js';
@@ -20,7 +18,7 @@ import { KeyServerType, retrieveKeyServers, verifyKeyServer } from './key-server
 import type { KeyServer } from './key-server.js';
 import { fetchKeysForAllIds } from './keys.js';
 import type { SessionKey } from './session-key.js';
-import type { KeyCacheKey } from './types.js';
+import type { KeyCacheKey, SealCompatibleClient } from './types.js';
 import { createFullId } from './utils.js';
 
 /**
@@ -31,15 +29,19 @@ import { createFullId } from './utils.js';
  * 	 Defaults to true.
  * @property timeout: Timeout in milliseconds for network requests. Defaults to 10 seconds.
  */
-export interface SealClientOptions {
-	suiClient: SuiClient;
+
+export interface SealClientExtensionOptions {
 	serverObjectIds: string[];
 	verifyKeyServers?: boolean;
 	timeout?: number;
 }
 
+export interface SealClientOptions extends SealClientExtensionOptions {
+	suiClient: SealCompatibleClient;
+}
+
 export class SealClient {
-	#suiClient: SuiClient;
+	#suiClient: SealCompatibleClient;
 	#serverObjectIds: string[];
 	#verifyKeyServers: boolean;
 	#keyServers: Promise<KeyServer[]> | null = null;
@@ -52,6 +54,18 @@ export class SealClient {
 		this.#serverObjectIds = options.serverObjectIds;
 		this.#verifyKeyServers = options.verifyKeyServers ?? true;
 		this.#timeout = options.timeout ?? 10_000;
+	}
+
+	static experimental_asClientExtension(options: SealClientExtensionOptions) {
+		return {
+			name: 'seal' as const,
+			register: (client: SealCompatibleClient) => {
+				return new SealClient({
+					suiClient: client,
+					...options,
+				});
+			},
+		};
 	}
 
 	/**

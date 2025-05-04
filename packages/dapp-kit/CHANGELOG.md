@@ -1,5 +1,49 @@
 # @mysten/dapp-kit
 
+## 0.16.2
+
+### Patch Changes
+
+- Updated dependencies [3f87e73]
+  - @mysten/slush-wallet@0.1.2
+  - @mysten/sui@1.29.1
+  - @mysten/wallet-standard@0.14.9
+
+## 0.16.1
+
+### Patch Changes
+
+- Updated dependencies [7d66a32]
+- Updated dependencies [eb91fba]
+- Updated dependencies [19a8045]
+  - @mysten/sui@1.29.0
+  - @mysten/slush-wallet@0.1.1
+  - @mysten/wallet-standard@0.14.8
+
+## 0.16.0
+
+### Minor Changes
+
+- c5adcb8: Integrated @mysten/slush-wallet, swapped registerStashedWallet for registerSlushWallet
+
+### Patch Changes
+
+- Updated dependencies [91624e0]
+- Updated dependencies [9a94aea]
+- Updated dependencies [c5adcb8]
+  - @mysten/slush-wallet@0.1.0
+  - @mysten/sui@1.28.2
+  - @mysten/wallet-standard@0.14.7
+
+## 0.15.7
+
+### Patch Changes
+
+- Updated dependencies [3cd4e53]
+  - @mysten/sui@1.28.1
+  - @mysten/wallet-standard@0.14.6
+  - @mysten/zksend@0.12.27
+
 ## 0.15.6
 
 ### Patch Changes

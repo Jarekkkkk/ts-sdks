@@ -3,7 +3,7 @@
 	"author": "Mysten Labs <build@mystenlabs.com>",
 	"description": "The static generation tool for Move Registry (mvr)",
 	"homepage": "https://sdk.mystenlabs.com",
-	"version": "0.1.6",
+	"version": "0.1.10",
 	"license": "Apache-2.0",
 	"files": [
 		"CHANGELOG.md",
@@ -19,7 +19,7 @@
 	"scripts": {
 		"clean": "rm -rf tsconfig.tsbuildinfo ./dist",
 		"build": "tsc --build",
-		"prepublishOnly": "pnpm build",
+		"prepublishOnly": "pnpm turbo build",
 		"prettier:check": "prettier -c --ignore-unknown .",
 		"prettier:fix": "prettier -w --ignore-unknown .",
 		"eslint:check": "eslint --max-warnings=0 .",

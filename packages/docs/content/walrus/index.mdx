@@ -120,7 +120,7 @@ walrus SDK
 
 The SDK exports all the error classes for different types of errors that can be thrown. Walrus is a
 fault tolerant distributed system, where many types of errors can be recovered from. During epoch
-changes there may be times when the data cahced in the `WalrusClient` can become invalid. Errors
+changes there may be times when the data cached in the `WalrusClient` can become invalid. Errors
 that result from this situation will extend the `RetryableWalrusClientError` class.
 
 You can check for these errors, and reset the client before retrying:

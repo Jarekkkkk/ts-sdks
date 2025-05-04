@@ -1,5 +1,42 @@
 # @mysten/seal
 
+## 0.4.2
+
+### Patch Changes
+
+- Updated dependencies [7e1c525]
+  - @mysten/bcs@1.6.1
+  - @mysten/sui@1.29.1
+
+## 0.4.1
+
+### Patch Changes
+
+- 81f406a: Add more details to InvalidPTB error
+- 7f108cb: feat(seal): add import export to session key
+- Updated dependencies [7d66a32]
+- Updated dependencies [eb91fba]
+- Updated dependencies [19a8045]
+  - @mysten/sui@1.29.0
+
+## 0.4.0
+
+### Minor Changes
+
+- 9a94aea: Add experimental client extension support
+
+### Patch Changes
+
+- Updated dependencies [9a94aea]
+  - @mysten/sui@1.28.2
+
+## 0.3.9
+
+### Patch Changes
+
+- Updated dependencies [3cd4e53]
+  - @mysten/sui@1.28.1
+
 ## 0.3.8
 
 ### Patch Changes

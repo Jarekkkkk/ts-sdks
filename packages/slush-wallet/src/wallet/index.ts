@@ -1,7 +1,6 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Transaction } from '@mysten/sui/transactions';
 import { fromBase64, toBase64 } from '@mysten/sui/utils';
 import type {
 	StandardConnectFeature,
@@ -30,7 +29,7 @@ import type { InferOutput } from 'valibot';
 import { boolean, object, parse, string } from 'valibot';
 import { DappPostMessageChannel, decodeJwtSession } from '@mysten/window-wallet-core';
 
-const DEFAULT_SLUSH_ORIGIN = 'https://getslush.com';
+const DEFAULT_SLUSH_ORIGIN = 'https://my.slush.app';
 
 type WalletEventsMap = {
 	[E in keyof StandardEventsListeners]: Parameters<StandardEventsListeners[E]>[0];
@@ -41,7 +40,7 @@ const SLUSH_SESSION_KEY = 'slush:session';
 export const SLUSH_WALLET_NAME = 'Slush' as const;
 
 const SUI_WALLET_EXTENSION_ID = 'com.mystenlabs.suiwallet' as const;
-const METADATA_API_URL = 'http://localhost:3001/api/wallet/metadata';
+const METADATA_API_URL = 'https://api.slush.app/api/wallet/metadata';
 
 const WalletMetadataSchema = object({
 	id: string('Wallet ID is required'),
@@ -182,8 +181,6 @@ export class SlushWallet implements Wallet {
 		account,
 		chain,
 	}) => {
-		transactionBlock.setSenderIfNotSet(account.address);
-
 		const data = await transactionBlock.toJSON();
 
 		const popup = this.#getNewPopupChannel();
@@ -228,10 +225,7 @@ export class SlushWallet implements Wallet {
 	}) => {
 		const popup = this.#getNewPopupChannel();
 
-		const tx = Transaction.from(await transaction.toJSON());
-		tx.setSenderIfNotSet(account.address);
-
-		const data = await tx.toJSON();
+		const data = await transaction.toJSON();
 
 		const response = await popup.send({
 			type: 'sign-and-execute-transaction',
@@ -248,15 +242,15 @@ export class SlushWallet implements Wallet {
 		};
 	};
 
-	#signPersonalMessage: SuiSignPersonalMessageMethod = async ({ message, account }) => {
+	#signPersonalMessage: SuiSignPersonalMessageMethod = async ({ message, account, chain }) => {
 		const popup = this.#getNewPopupChannel();
 
 		const response = await popup.send({
 			type: 'sign-personal-message',
 			message: toBase64(message),
 			address: account.address,
+			chain: chain ?? account.chains[0],
 			session: getSessionFromStorage(),
-			chain: account.chains[0],
 		});
 
 		return {

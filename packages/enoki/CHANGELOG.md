@@ -1,5 +1,49 @@
 # @mysten/enoki
 
+## 0.6.10
+
+### Patch Changes
+
+- @mysten/sui@1.29.1
+- @mysten/signers@0.2.8
+- @mysten/wallet-standard@0.14.9
+
+## 0.6.9
+
+### Patch Changes
+
+- Updated dependencies [8356318]
+  - @mysten/signers@0.2.7
+
+## 0.6.8
+
+### Patch Changes
+
+- Updated dependencies [7d66a32]
+- Updated dependencies [eb91fba]
+- Updated dependencies [19a8045]
+  - @mysten/sui@1.29.0
+  - @mysten/signers@0.2.6
+  - @mysten/wallet-standard@0.14.8
+
+## 0.6.7
+
+### Patch Changes
+
+- Updated dependencies [9a94aea]
+  - @mysten/sui@1.28.2
+  - @mysten/signers@0.2.5
+  - @mysten/wallet-standard@0.14.7
+
+## 0.6.6
+
+### Patch Changes
+
+- Updated dependencies [3cd4e53]
+  - @mysten/sui@1.28.1
+  - @mysten/signers@0.2.4
+  - @mysten/wallet-standard@0.14.6
+
 ## 0.6.5
 
 ### Patch Changes

@@ -1,5 +1,44 @@
 # @mysten/zksend
 
+## 0.13.1
+
+### Patch Changes
+
+- @mysten/sui@1.29.1
+- @mysten/wallet-standard@0.14.9
+
+## 0.13.0
+
+### Minor Changes
+
+- 1236043: Update all Stashed references to Slush in link builder.
+- 90033a0: Add options to getSentTransactionsWithLinks query
+- 1236043: Removes deprecated redirect parameters in link construction
+
+### Patch Changes
+
+- Updated dependencies [7d66a32]
+- Updated dependencies [eb91fba]
+- Updated dependencies [19a8045]
+  - @mysten/sui@1.29.0
+  - @mysten/wallet-standard@0.14.8
+
+## 0.12.28
+
+### Patch Changes
+
+- Updated dependencies [9a94aea]
+  - @mysten/sui@1.28.2
+  - @mysten/wallet-standard@0.14.7
+
+## 0.12.27
+
+### Patch Changes
+
+- Updated dependencies [3cd4e53]
+  - @mysten/sui@1.28.1
+  - @mysten/wallet-standard@0.14.6
+
 ## 0.12.26
 
 ### Patch Changes

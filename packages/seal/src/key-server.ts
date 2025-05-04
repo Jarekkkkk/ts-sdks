@@ -1,18 +1,20 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
 import { fromBase64, fromHex } from '@mysten/bcs';
-import type { SuiClient } from '@mysten/sui/client';
 import { bls12_381 } from '@noble/curves/bls12-381';
 
 import { KeyServerMove } from './bcs.js';
 import {
 	InvalidGetObjectError,
+	InvalidKeyServerVersionError,
 	SealAPIError,
 	UnsupportedFeatureError,
 	UnsupportedNetworkError,
 } from './error.js';
 import { DST_POP } from './ibe.js';
 import { PACKAGE_VERSION } from './version.js';
+import type { SealCompatibleClient } from './types.js';
+import { Version } from './utils.js';
 
 export type KeyServer = {
 	objectId: string;
@@ -25,6 +27,8 @@ export type KeyServer = {
 export enum KeyServerType {
 	BonehFranklinBLS12381 = 0,
 }
+
+export const SERVER_VERSION_REQUIREMENT = new Version('0.2.0');
 
 /**
  * Returns a static list of Seal key server object ids that the dapp can choose to use.
@@ -55,28 +59,21 @@ export async function retrieveKeyServers({
 	client,
 }: {
 	objectIds: string[];
-	client: SuiClient;
+	client: SealCompatibleClient;
 }): Promise<KeyServer[]> {
 	// todo: do not fetch the same object ID if this is fetched before.
 	return await Promise.all(
 		objectIds.map(async (objectId) => {
-			const res = await client.getObject({
-				id: objectId,
-				options: {
-					showBcs: true,
-				},
-			});
-			if (!res || res.error || !res.data) {
-				throw new InvalidGetObjectError(`KeyServer ${objectId} not found; ${res.error}`);
+			let res;
+			try {
+				res = await client.core.getObject({
+					objectId,
+				});
+			} catch (e) {
+				throw new InvalidGetObjectError(`KeyServer ${objectId} not found; ${(e as Error).message}`);
 			}
 
-			if (!res.data.bcs || !('bcsBytes' in res.data.bcs)) {
-				throw new InvalidGetObjectError(
-					`Invalid KeyServer query: ${objectId}, expected object, got package`,
-				);
-			}
-
-			const ks = KeyServerMove.parse(fromBase64(res.data.bcs!.bcsBytes));
+			const ks = KeyServerMove.parse(res.object.content);
 			if (ks.keyType !== 0) {
 				throw new UnsupportedFeatureError(`Unsupported key type ${ks.keyType}`);
 			}
@@ -114,6 +111,7 @@ export async function verifyKeyServer(server: KeyServer, timeout: number): Promi
 	});
 
 	await SealAPIError.assertResponse(response, requestId);
+	verifyKeyServerVersion(response);
 	const serviceResponse = await response.json();
 
 	if (serviceResponse.service_id !== server.objectId) {
@@ -121,4 +119,21 @@ export async function verifyKeyServer(server: KeyServer, timeout: number): Promi
 	}
 	const fullMsg = new Uint8Array([...DST_POP, ...server.pk, ...fromHex(server.objectId)]);
 	return bls12_381.verifyShortSignature(fromBase64(serviceResponse.pop), fullMsg, server.pk);
+}
+
+/**
+ * Verify the key server version. Throws an `InvalidKeyServerError` if the version is not supported.
+ *
+ * @param response - The response from the key server.
+ */
+export function verifyKeyServerVersion(response: Response) {
+	const keyServerVersion = response.headers.get('X-KeyServer-Version');
+	if (keyServerVersion == null) {
+		throw new InvalidKeyServerVersionError('Key server version not found');
+	}
+	if (new Version(keyServerVersion).older_than(SERVER_VERSION_REQUIREMENT)) {
+		throw new InvalidKeyServerVersionError(
+			`Key server version ${keyServerVersion} is not supported`,
+		);
+	}
 }

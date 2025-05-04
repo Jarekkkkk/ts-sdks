@@ -10,7 +10,7 @@
 		"wallet-provider",
 		"wallet-components",
 		"wallet-hooks",
-		"stashed",
+		"slush-wallet",
 		"themes"
 	]
 }

@@ -16,7 +16,6 @@ import {
 	InvalidPersonalMessageSignatureError,
 	InvalidPTBError,
 	InvalidThresholdError,
-	InvalidUserSignatureError,
 	NoAccessError,
 	toMajorityError,
 } from '../../src/error';
@@ -182,6 +181,44 @@ describe('Integration test', () => {
 		expect(decryptedBytes2).toEqual(data2);
 	});
 
+	it('client extension', { timeout: 12000 }, async () => {
+		const whitelistId = '0xaae704d2280f2c3d24fc08972bb31f2ef1f1c968784935434c3296be5bfd9d5b';
+		const data = new Uint8Array([1, 2, 3]);
+
+		const client = suiClient.$extend(
+			SealClient.experimental_asClientExtension({
+				serverObjectIds: objectIds,
+				verifyKeyServers: false,
+			}),
+		);
+
+		const { encryptedObject: encryptedBytes } = await client.seal.encrypt({
+			threshold: objectIds.length,
+			packageId: TESTNET_PACKAGE_ID,
+			id: whitelistId,
+			data,
+		});
+
+		const txBytes = await constructTxBytes(TESTNET_PACKAGE_ID, 'whitelist', suiClient, [
+			whitelistId,
+		]);
+
+		const sessionKey = new SessionKey({
+			address: suiAddress,
+			packageId: TESTNET_PACKAGE_ID,
+			ttlMin: 10,
+			signer: keypair,
+		});
+		// decrypt the object encrypted to whitelist 1.
+		const decryptedBytes = await client.seal.decrypt({
+			data: encryptedBytes,
+			sessionKey,
+			txBytes,
+		});
+
+		expect(decryptedBytes).toEqual(data);
+	});
+
 	it('test different validateEncryptionServices errors', async () => {
 		const whitelistId = '0xaae704d2280f2c3d24fc08972bb31f2ef1f1c968784935434c3296be5bfd9d5b';
 		const data = new Uint8Array([1, 2, 3]);
@@ -266,10 +303,6 @@ describe('Integration test', () => {
 	it('test fetchKeys throws SealAPIError', async () => {
 		// Setup encrypted object.
 		const whitelistId = '0xaae704d2280f2c3d24fc08972bb31f2ef1f1c968784935434c3296be5bfd9d5b';
-		const txBytes = await constructTxBytes(TESTNET_PACKAGE_ID, 'whitelist', suiClient, [
-			whitelistId,
-		]);
-
 		const client = new SealClient({
 			suiClient,
 			serverObjectIds: objectIds,
@@ -291,17 +324,11 @@ describe('Integration test', () => {
 			address: wrongSuiAddress,
 			packageId: TESTNET_PACKAGE_ID,
 			ttlMin: 10,
-			signer: keypair,
 		});
-
-		await expect(
-			client.fetchKeys({
-				ids: [encryptedObject.id],
-				txBytes,
-				sessionKey,
-				threshold: encryptedObject.threshold,
-			}),
-		).rejects.toThrow(InvalidUserSignatureError);
+		const sig = await keypair.signPersonalMessage(sessionKey.getPersonalMessage());
+		await expect(sessionKey.setPersonalMessageSignature(sig.signature)).rejects.toThrow(
+			InvalidPersonalMessageSignatureError,
+		);
 
 		// Wrong txBytes fails to verify.
 		const sessionKey2 = new SessionKey({
@@ -322,6 +349,37 @@ describe('Integration test', () => {
 				threshold: encryptedObject.threshold,
 			}),
 		).rejects.toThrow(NoAccessError);
+
+		// construct a non move call ptb, gets invalid PTB error.
+		const tx = new Transaction();
+		const objectArg = tx.object(whitelistId);
+		tx.transferObjects([objectArg], suiAddress);
+		const txBytes3 = await tx.build({ client: suiClient, onlyTransactionKind: true });
+
+		const client2 = new SealClient({
+			suiClient,
+			serverObjectIds: objectIds,
+			verifyKeyServers: false,
+		});
+
+		const sessionKey3 = new SessionKey({
+			address: suiAddress,
+			packageId: TESTNET_PACKAGE_ID,
+			ttlMin: 10,
+			signer: keypair,
+		});
+		await expect(
+			client2.fetchKeys({
+				ids: [whitelistId],
+				txBytes: txBytes3,
+				sessionKey: sessionKey3,
+				threshold: 2,
+			}),
+		).rejects.toThrowError(
+			expect.objectContaining({
+				message: expect.stringContaining('Invalid PTB: Invalid first command'),
+			}),
+		);
 	});
 
 	it('test session key verify personal message signature', async () => {

@@ -332,6 +332,9 @@ describe('coinWithBalance', () => {
 					type: testTypeZero,
 					balance: 0n,
 				}),
+				coinWithBalance({
+					balance: 0n,
+				}),
 			],
 			receiver.toSuiAddress(),
 		);
@@ -371,10 +374,23 @@ describe('coinWithBalance', () => {
 					},
 				},
 				{
+					$Intent: {
+						data: {
+							balance: '0',
+							type: 'gas',
+						},
+						inputs: {},
+						name: 'CoinWithBalance',
+					},
+				},
+				{
 					TransferObjects: {
 						objects: [
 							{
 								Result: 0,
+							},
+							{
+								Result: 1,
 							},
 						],
 						address: {
@@ -407,6 +423,11 @@ describe('coinWithBalance', () => {
 						bytes: toBase64(fromHex(receiver.toSuiAddress())),
 					},
 				},
+				{
+					Pure: {
+						bytes: toBase64(bcs.u64().serialize(0).toBytes()),
+					},
+				},
 			],
 			sender: publishToolbox.keypair.toSuiAddress(),
 			commands: [
@@ -420,8 +441,20 @@ describe('coinWithBalance', () => {
 					},
 				},
 				{
+					SplitCoins: {
+						coin: {
+							GasCoin: true,
+						},
+						amounts: [
+							{
+								Input: 1,
+							},
+						],
+					},
+				},
+				{
 					TransferObjects: {
-						objects: [{ Result: 0 }],
+						objects: [{ Result: 0 }, { NestedResult: [1, 0] }],
 						address: {
 							Input: 0,
 						},

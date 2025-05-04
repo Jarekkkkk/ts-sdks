@@ -15,10 +15,10 @@ export class SealAPIError extends SealError {
 		super(message);
 	}
 
-	static #generate(message: string, requestId: string, status?: number) {
-		switch (message) {
+	static #generate(error: string, message: string, requestId: string, status?: number) {
+		switch (error) {
 			case 'InvalidPTB':
-				return new InvalidPTBError(requestId);
+				return new InvalidPTBError(requestId, message);
 			case 'InvalidPackage':
 				return new InvalidPackageError(requestId);
 			case 'NoAccess':
@@ -31,6 +31,10 @@ export class SealAPIError extends SealError {
 				return new InvalidUserSignatureError(requestId);
 			case 'InvalidSessionSignature':
 				return new InvalidSessionKeySignatureError(requestId);
+			case 'InvalidSDKVersion':
+				return new InvalidSDKVersionError(requestId);
+			case 'DeprecatedSDKVersion':
+				return new DeprecatedSDKVersionError(requestId);
 			case 'Failure':
 				return new InternalError(requestId);
 			default:
@@ -46,7 +50,8 @@ export class SealAPIError extends SealError {
 		try {
 			const text = await response.text();
 			const error = JSON.parse(text)['error'];
-			errorInstance = SealAPIError.#generate(error, requestId);
+			const message = JSON.parse(text)['message'];
+			errorInstance = SealAPIError.#generate(error, message, requestId);
 		} catch (e) {
 			// If we can't parse the response as JSON or if it doesn't have the expected format,
 			// fall back to using the status text
@@ -59,8 +64,8 @@ export class SealAPIError extends SealError {
 // Errors returned by the Seal server that indicate that the PTB is invalid
 
 export class InvalidPTBError extends SealAPIError {
-	constructor(requestId?: string) {
-		super('PTB does not conform to the expected format', requestId);
+	constructor(requestId?: string, message?: string) {
+		super('PTB does not conform to the expected format ' + message, requestId);
 	}
 }
 
@@ -87,6 +92,20 @@ export class InvalidUserSignatureError extends SealAPIError {
 export class InvalidSessionKeySignatureError extends SealAPIError {
 	constructor(requestId?: string) {
 		super('Session key signature is invalid', requestId);
+	}
+}
+
+// Errors returned by the Seal server that indicate that the SDK version is invalid (implying that HTTP headers used by the SDK are being removed) or deprecated (implying that the SDK should be upgraded).
+
+export class InvalidSDKVersionError extends SealAPIError {
+	constructor(requestId?: string) {
+		super('SDK version is invalid', requestId);
+	}
+}
+
+export class DeprecatedSDKVersionError extends SealAPIError {
+	constructor(requestId?: string) {
+		super('SDK version is deprecated', requestId);
 	}
 }
 
@@ -120,6 +139,7 @@ export class InvalidGetObjectError extends UserError {}
 export class UnsupportedFeatureError extends UserError {}
 export class UnsupportedNetworkError extends UserError {}
 export class InvalidKeyServerError extends UserError {}
+export class InvalidKeyServerVersionError extends UserError {}
 export class InvalidCiphertextError extends UserError {}
 export class InvalidThresholdError extends UserError {}
 export class InconsistentKeyServersError extends UserError {}

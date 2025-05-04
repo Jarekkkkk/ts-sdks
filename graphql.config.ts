@@ -10,10 +10,12 @@ const config: IGraphQLConfig = {
 			documents: [
 				'./packages/graphql-transport/src/**/*.ts',
 				'./packages/graphql-transport/src/**/*.graphql',
+				'./packages/typescript/src/graphql/queries/**/*.graphql',
 			],
 			include: [
 				'./packages/graphql-transport/src/**/*.ts',
 				'./packages/graphql-transport/src/**/*.graphql',
+				'./packages/typescript/src/graphql/queries/**/*.graphql',
 			],
 		},
 	},

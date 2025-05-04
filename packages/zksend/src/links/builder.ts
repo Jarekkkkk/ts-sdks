@@ -13,13 +13,6 @@ import { normalizeStructTag, normalizeSuiAddress, SUI_TYPE_ARG, toBase64 } from 
 import type { ZkBagContractOptions } from './zk-bag.js';
 import { getContractIds, ZkBag } from './zk-bag.js';
 
-interface ZkSendLinkRedirect {
-	/** @deprecated zkSend link redirects are no longer supported */
-	url: string;
-	/** @deprecated zkSend link redirects are no longer supported */
-	name?: string;
-}
-
 export interface ZkSendLinkBuilderOptions {
 	host?: string;
 	path?: string;
@@ -27,13 +20,11 @@ export interface ZkSendLinkBuilderOptions {
 	network?: 'mainnet' | 'testnet';
 	client?: SuiClient;
 	sender: string;
-	/** @deprecated zkSend link redirects are no longer supported */
-	redirect?: ZkSendLinkRedirect;
 	contract?: ZkBagContractOptions | null;
 }
 
 const DEFAULT_ZK_SEND_LINK_OPTIONS = {
-	host: 'https://getstashed.com',
+	host: 'https://my.slush.app',
 	path: '/claim',
 	network: 'mainnet' as const,
 };
@@ -62,8 +53,6 @@ export class ZkSendLinkBuilder {
 	#path: string;
 	keypair: Keypair;
 	#client: SuiClient;
-	/** @deprecated Remove once this functionality is removed from Stashed */
-	#redirect?: ZkSendLinkRedirect;
 	#coinsByType = new Map<string, CoinStruct[]>();
 	#contract?: ZkBag<ZkBagContractOptions>;
 
@@ -74,12 +63,10 @@ export class ZkSendLinkBuilder {
 		network = DEFAULT_ZK_SEND_LINK_OPTIONS.network,
 		client = new SuiClient({ url: getFullnodeUrl(network) }),
 		sender,
-		redirect,
 		contract = getContractIds(network),
 	}: ZkSendLinkBuilderOptions) {
 		this.#host = host;
 		this.#path = path;
-		this.#redirect = redirect;
 		this.keypair = keypair;
 		this.#client = client;
 		this.sender = normalizeSuiAddress(sender);
@@ -116,13 +103,6 @@ export class ZkSendLinkBuilder {
 
 		if (this.network !== 'mainnet') {
 			link.searchParams.set('network', this.network);
-		}
-
-		if (this.#redirect) {
-			link.searchParams.set('redirect_url', this.#redirect.url);
-			if (this.#redirect.name) {
-				link.searchParams.set('name', this.#redirect.name);
-			}
 		}
 
 		return link.toString();

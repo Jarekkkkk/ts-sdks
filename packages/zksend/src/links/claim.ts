@@ -31,7 +31,7 @@ import type { ZkBagContractOptions } from './zk-bag.js';
 import { getContractIds, ZkBag } from './zk-bag.js';
 
 const DEFAULT_ZK_SEND_LINK_OPTIONS = {
-	host: 'https://getstashed.com',
+	host: 'https://api.slush.app',
 	path: '/claim',
 	network: 'mainnet' as const,
 };

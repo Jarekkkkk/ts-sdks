@@ -37,3 +37,33 @@ export function createFullId(dst: Uint8Array, packageId: string, innerId: string
 	fullId.set(innerIdBytes, 1 + dst.length + packageIdBytes.length);
 	return toHex(fullId);
 }
+
+/**
+ * A simple class to represent a version number of the form x.y.z.
+ */
+export class Version {
+	major: number;
+	minor: number;
+	patch: number;
+
+	constructor(version: string) {
+		// Very basic version parsing. Assumes version is in the format x.y.z where x, y, and z are non-negative integers.
+		const parts = version.split('.').map(Number);
+		if (parts.length !== 3 || parts.some((part) => isNaN(part) || part < 0)) {
+			throw new UserError(`Invalid version format: ${version}`);
+		}
+		this.major = parts[0];
+		this.minor = parts[1];
+		this.patch = parts[2];
+	}
+
+	// Compare this version with another version. True if this version is older than the other version.
+	older_than(other: Version): boolean {
+		if (this.major !== other.major) {
+			return this.major < other.major;
+		} else if (this.minor !== other.minor) {
+			return this.minor < other.minor;
+		}
+		return this.patch < other.patch;
+	}
+}

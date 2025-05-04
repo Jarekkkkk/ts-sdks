@@ -24,7 +24,12 @@ const config = {
 			},
 			{
 				source: '/dapp-kit/zksend',
-				destination: '/dapp-kit/stashed',
+				destination: '/dapp-kit/slush',
+				statusCode: 302,
+			},
+			{
+				source: '/dapp-kit/stashed',
+				destination: '/dapp-kit/slush',
 				statusCode: 302,
 			},
 		];
